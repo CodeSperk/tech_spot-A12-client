@@ -15,7 +15,7 @@ const Login = () => {
   const successMessage = () => { 
     Swal.fire({
     icon: "success",
-    title: "Login Sussess",
+    title: "Login Success",
     showConfirmButton: false,
     timer: 1500
   });
@@ -29,7 +29,7 @@ const Login = () => {
     const email = form.email.value;
     const password = form.password.value;
     loginUser(email, password)
-    .then(result => {
+    .then(() => {
       successMessage();
     })
     .catch(error => {
@@ -42,7 +42,7 @@ const Login = () => {
 //Login with google
   const handleGoogleLogin = () => {
     googleLogin()
-    .then(result => {
+    .then(() => {
       successMessage();
     })
     .catch(error => {

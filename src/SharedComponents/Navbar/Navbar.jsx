@@ -14,11 +14,14 @@ import { Link, NavLink } from "react-router-dom";
 import logo from "/logo.png";
 import avatar from "../../assets/icons&logo/avatar.png";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
+import useAuth from "../../Hooks/useAuth";
+import Swal from "sweetalert2";
 
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const user = false;
+  const {user, logOutUser} = useAuth();
+  console.log(user);
 
   useEffect(() => {
     window.addEventListener(
@@ -26,6 +29,23 @@ const Navbar = () => {
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
   }, []);
+
+
+  // to logout user
+  const handleLogOut = () => {
+    logOutUser()
+    .then(() => {
+      Swal.fire({
+        icon: "success",
+        title: "Logout Success",
+        showConfirmButton: false,
+        timer: 1500
+    });
+    })      
+    .catch(error => {
+      console.log(error);
+    })
+  }
 
   const menuList = (
     <>
@@ -70,7 +90,7 @@ const Navbar = () => {
             )}
           </IconButton>
 
-          {/* Conditional login, register and user profile */}
+          {/*user profile and Conditional login-register*/}
           {user ? (
             <Menu
               open={isMenuOpen}
@@ -79,13 +99,13 @@ const Navbar = () => {
             >
               <MenuHandler>
                 <div className="w-12 rounded-full border-4 border-[var(--clr-white)] bg-[var(--bg-secondary)] cursor-pointer">
-                  <img src={avatar} alt="User's Profile Picture" />
+                  <img src={user?.photoURL || avatar} alt="User's Profile Picture" className="rounded-full" />
                 </div>
               </MenuHandler>
               <MenuList className="p-4 text-[var(--clr-primary)]">
-                <p>Mahbubur Rahman</p>
+                <p>{user?.displayName}</p>
                 <li className="my-4 mb-6">Dashboard</li>
-                <button className="btn1 w-full">Logout</button>
+                <button className="btn1 w-full" onClick={handleLogOut}>Logout</button>
               </MenuList>
             </Menu>
           ) : (
