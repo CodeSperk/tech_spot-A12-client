@@ -9,11 +9,11 @@ import {
 } from "@material-tailwind/react";
 
 import "./navbar.css";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "/logo.png";
 import avatar from "../../assets/icons&logo/avatar.png";
+import { IoMdClose, IoMdMenu } from "react-icons/io";
 
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
@@ -43,16 +43,20 @@ const Navbar = () => {
   return (
     <nav className="py-6 md:py-8 lg:py-10">
       <div className="flex items-center justify-between">
+        {/* Logo and website name */}
         <div className="cursor-pointer flex items-center gap-2">
-          <img src={logo} alt="" className="w-10"/>
+          <img src={logo} alt="" className="w-10" />
           <h3>
             <span className="text-[var(--clr-focussed)]">Tech</span>Spot
           </h3>
         </div>
 
+      {/* Centered Menu for large devices */}
         <div className="hidden lg:block">{menuList}</div>
-
+      
+      {/* Navbar end */}
         <div className="flex gap-2 items-center">
+          {/* Icon to open collapsed menu */}
           <IconButton
             variant="text"
             color="blue-gray"
@@ -60,12 +64,13 @@ const Navbar = () => {
             onClick={() => setOpenNav(!openNav)}
           >
             {openNav ? (
-              <XMarkIcon className="h-6 w-6" strokeWidth={2} />
+              <IoMdClose className="h-6 w-6" strokeWidth={2} />
             ) : (
-              <Bars3Icon className="h-6 w-6" strokeWidth={2} />
+              <IoMdMenu className="h-6 w-6" strokeWidth={2} />
             )}
           </IconButton>
 
+          {/* Conditional login, register and user profile */}
           {user ? (
             <Menu
               open={isMenuOpen}
@@ -85,25 +90,34 @@ const Navbar = () => {
             </Menu>
           ) : (
             <div className="hidden gap-2 lg:flex">
-              <button className="btn1 bg-transparent">Login</button>
-              <button className="btn1">Register</button>
+              <Link to="/login">
+                <button className="btn1 bg-transparent">Login</button>
+              </Link>
+              <Link to="/register">
+                <button className="btn1 bg-transparent">Register</button>
+              </Link>
             </div>
           )}
         </div>
       </div>
 
+      {/* Collapsed Menu for medium and smaller devices*/}
       <Collapse open={openNav}>
         <div className="shadow-3xl border-2 border-t-0 p-4 md:p-8">
           {menuList}
-
           {!user && (
             <div className="flex w-full flex-nowrap items-center gap-2 lg:hidden">
-              <button className="btn1 w-full lg:w-fit">Login</button>
-              <button className="btn1 w-full lg:w-fit">Register</button>
+              <Link to="/login" className="w-full">
+                <button className="btn1 w-full lg:w-fit">Login</button>
+              </Link>
+              <Link to="/register" className="w-full">
+                <button className="btn1 w-full lg:w-fit">Register</button>
+              </Link>
             </div>
           )}
         </div>
       </Collapse>
+
     </nav>
   );
 };
