@@ -8,13 +8,15 @@
 :root{
   /* text-colors */
   --clr-primary: #171515;
+  --clr-secondary: #555555;
   --clr-light-gray:#c1bebe;
   --clr-focussed: #FF1749;
 
   --clr-white: #ffffff;
 
   /* background-colors */
-  --bg-primary: #fff8f8;
+  --bg-primary: #F6F4FE;
+  --bg-secondary: #e0e0f1;
 }
 
 body{
@@ -22,6 +24,12 @@ body{
   font-family: "Poppins", sans-serif;
   background-color: var(--bg-primary);
   color:var(--clr-primary);
+}
+
+/* global
+--------------- */
+img {
+  width: 100%;
 }
 
 h1,h2,h3,h4,h5,h6{
@@ -51,7 +59,7 @@ h6{
 
 
 
-.btn{
+.btn1{
   padding: 8px 20px;
   background: var(--clr-focussed);
   color:var(--clr-white);
@@ -61,7 +69,7 @@ h6{
   cursor: pointer;
   transition: all 0.3s ease;
 }
-.btn:hover{
+.btn1:hover{
   color: var(--clr-focussed);
   border: 2px solid var(--clr-focussed);
   background: transparent;
