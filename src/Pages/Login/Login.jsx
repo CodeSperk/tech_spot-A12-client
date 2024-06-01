@@ -2,7 +2,7 @@ import { useState } from "react";
 import { CiWarning } from "react-icons/ci";
 import { FcGoogle } from "react-icons/fc";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
@@ -11,8 +11,9 @@ const Login = () => {
   const [showPass, setShowPass] = useState(false);
   const { loginUser, googleLogin } = useAuth();
   const [error, setError] = useState("");
-  const navigate = useNavigate();
   const axiosPublic = useAxiosPublic();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   // to display success message
   const successMessage = () => {
@@ -33,7 +34,7 @@ const Login = () => {
     loginUser(email, password)
       .then( () => {
         successMessage();
-        navigate("/");
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         if (error.code === "auth/invalid-credential") {
@@ -46,7 +47,6 @@ const Login = () => {
   const handleGoogleLogin = () => {
     googleLogin()
       .then(result => {
-        
         // To save user info to the database
         const userInfo = {
           name: result.user?.displayName,
@@ -57,7 +57,7 @@ const Login = () => {
         axiosPublic.post("/users", userInfo)
         .then(res => {
           successMessage();
-          navigate("/");
+          navigate(location?.state ? location.state : "/");
         })
       })
       .catch((error) => {

@@ -7,6 +7,7 @@ import DashboardLayout from "../Layouts/DashboardLayout";
 import MyProfile from "../Pages/Dashboard/User/MyProfile/MyProfile";
 import AddProduct from "../Pages/Dashboard/User/AddProduct/AddProduct";
 import MyProduct from "../Pages/Dashboard/User/MyProduct/MyProduct";
+import PrivateRout from "./PrivateRout";
 
 const MainRoutes = createBrowserRouter([
   {
@@ -29,7 +30,7 @@ const MainRoutes = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: <PrivateRout><DashboardLayout /></PrivateRout>,
     children: [
       {
         path: "",
