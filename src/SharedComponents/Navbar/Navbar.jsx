@@ -16,11 +16,12 @@ import avatar from "../../assets/icons&logo/avatar.png";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
+import { MdDashboard } from "react-icons/md";
 
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const {user, logOutUser} = useAuth();
+  const { user, logOutUser } = useAuth();
   console.log(user);
 
   useEffect(() => {
@@ -30,22 +31,21 @@ const Navbar = () => {
     );
   }, []);
 
-
   // to logout user
   const handleLogOut = () => {
     logOutUser()
-    .then(() => {
-      Swal.fire({
-        icon: "success",
-        title: "Logout Success",
-        showConfirmButton: false,
-        timer: 1500
-    });
-    })      
-    .catch(error => {
-      console.log(error);
-    })
-  }
+      .then(() => {
+        Swal.fire({
+          icon: "success",
+          title: "Logout Success",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const menuList = (
     <>
@@ -71,10 +71,10 @@ const Navbar = () => {
           </h3>
         </div>
 
-      {/* Centered Menu for large devices */}
+        {/* Centered Menu for large devices */}
         <div className="hidden lg:block">{menuList}</div>
-      
-      {/* Navbar end */}
+
+        {/* Navbar end */}
         <div className="flex gap-2 items-center">
           {/* Icon to open collapsed menu */}
           <IconButton
@@ -99,13 +99,24 @@ const Navbar = () => {
             >
               <MenuHandler>
                 <div className="w-12 rounded-full border-4 border-[var(--clr-white)] bg-[var(--bg-secondary)] cursor-pointer">
-                  <img src={user?.photoURL || avatar} alt="User's Profile Picture" className="rounded-full" />
+                  <img
+                    src={user?.photoURL || avatar}
+                    alt="User's Profile Picture"
+                    className="rounded-full"
+                  />
                 </div>
               </MenuHandler>
               <MenuList className="p-4 text-[var(--clr-primary)]">
-                <p>{user?.displayName}</p>
-                <li className="my-4 mb-6">Dashboard</li>
-                <button className="btn1 w-full" onClick={handleLogOut}>Logout</button>
+                <div className="outline-none">
+                  <p className="text-center">{user?.displayName}</p>
+                <Link to="/dashboard">
+                  <div className="my-4 mb-6 font-semibold text-[var(--clr-secondary)] hover:text-[var(--clr-focussed)] flex items-center gap-2 text-base "> <MdDashboard className="text-xl"/> <span>Dashboard</span></div>
+                </Link>
+
+                <button className="btn1 w-full" onClick={handleLogOut}>
+                  Logout
+                </button>
+                </div>
               </MenuList>
             </Menu>
           ) : (
@@ -137,7 +148,6 @@ const Navbar = () => {
           )}
         </div>
       </Collapse>
-
     </nav>
   );
 };
