@@ -1,17 +1,77 @@
+import { useState } from "react";
+import { CiWarning } from "react-icons/ci";
 import { FcGoogle } from "react-icons/fc";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
 
 const Login = () => {
+  const [showPass, setShowPass] = useState(false);
+  const {loginUser, googleLogin} = useAuth();
+  const [error, setError] = useState("");
+
+  // to display success message
+  const successMessage = () => { 
+    Swal.fire({
+    icon: "success",
+    title: "Login Sussess",
+    showConfirmButton: false,
+    timer: 1500
+  });
+}
+
+
+// To login User  with email and password
+  const handleLoginUser = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    loginUser(email, password)
+    .then(result => {
+      successMessage();
+    })
+    .catch(error => {
+      if(error.code === "auth/invalid-credential"){
+        setError("Invalid email / password");
+      }
+    }) 
+  }
+
+//Login with google
+  const handleGoogleLogin = () => {
+    googleLogin()
+    .then(result => {
+      successMessage();
+    })
+    .catch(error => {
+        setError(error.code);
+     })
+  }
+
+
   return (
-    <main className=" p-4 flex h-screen justify-center items-center">
-      <div className="w-[320px]">
+    <main className=" p-4 md:p-16 lg:p-24 flex min-h-[100vh] justify-center items-center">
+      <div className="w-[320px] md:w-[360px]">
         <h2 className="font-bold text-center mb-8">
           <span className="text-[var(--clr-focussed)]">Tech</span>Spot
         </h2>
-        <form className="px-4 py-8 border border-[var(--clr-light-gray)] rounded-md">
+
+
+{/* to display error message */}
+        {
+          error && 
+          <div className="w-full border border-[var(--clr-focussed)] p-4 rounded-md mb-4 text-[var(--clr-error)] flex  items-center gap-2">
+          <CiWarning className="text-3xl"/>
+           <p>{error}</p>
+        </div>
+        }
+
+        <form className="px-4 py-8 border border-[var(--clr-light-gray)] rounded-md" onSubmit={handleLoginUser}>
           <div className="flex justify-between items-center">
             <h5 className="font-semibold">Sign In</h5>
-            <div className="text-2xl py-1 px-1 bg-white rounded-md hover:scale-90 cursor-pointer border-2 duration-300">
+            <div className="text-2xl py-1 px-1 bg-white rounded-md hover:scale-90 cursor-pointer border-2 duration-300" onClick={handleGoogleLogin}>
               <FcGoogle/>
             </div>
           </div>
@@ -23,6 +83,7 @@ const Login = () => {
             </label>
             <input
               type="email"
+              name="email"
               placeholder="Enter your Email here"
               className="py-2 rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm"
             />
@@ -33,11 +94,19 @@ const Login = () => {
             <label htmlFor="password" className="text-sm font-semibold mb-2">
               Password
             </label>
+            <div className="relative">
             <input
-              type="password"
+              type={showPass? "text" : "password"}
+              name="password"
               placeholder="Enter your Password here"
-              className="py-2 rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm"
+              className="py-2 rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm w-full"
             />
+                         <div className="absolute top-1/2 right-4 -translate-y-1/2 text-xl" onClick={() => setShowPass(!showPass)}>
+                {
+                  showPass? <IoEyeOffOutline></IoEyeOffOutline> : <IoEyeOutline ></IoEyeOutline>
+                }
+              </div>
+            </div>
           </div>
 
           <button className="text-center w-full bg-[var(--clr-focussed)] text-[var(--clr-white)] py-1.5 px-4 rounded-md hover:scale-95 duration-500">

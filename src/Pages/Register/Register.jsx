@@ -1,31 +1,71 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useContext } from "react";
-import { AuthContext } from "../../Provider/AuthProvider";
+import { useState } from "react";
+import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
+import { CiWarning } from "react-icons/ci";
+import { updateProfile } from "firebase/auth";
+import Swal from "sweetalert2";
+import useAuth from "../../Hooks/useAuth";
 
 const Register = () => {
-  const {createUser} = useContext(AuthContext);
+  const [showPass, setShowPass] = useState(false);
+  const { createUser, logOutUser } = useAuth();
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+
+  const successMessage = () => { 
+    Swal.fire({
+    icon: "success",
+    title: "Registration Sussessfull",
+    showConfirmButton: false,
+    timer: 1500
+  });
+}
+  
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm();
   const onSubmit = (data) => {
+    setError("");
+   
     createUser(data.email, data.password)
-    .then(result => {
-      console.log(result.user);
-    })
-    .then(error => {
-      console.log(error);
-    })
+      .then((result) => {
+        updateProfile(result.user, {
+          displayName:data.name, photoURL:data.photo
+        });
+        successMessage();
+        // to avoid auto login after registration
+        logOutUser().then().catch(error => console.log(error));
+
+        navigate("/login");
+      })
+      .catch((error) => {
+        if (error.code === "auth/email-already-in-use") {
+          setError("Already registered with this email. Try with another Email");
+        }
+      });
   };
 
   return (
-    <main className=" p-4 flex h-screen justify-center items-center">
-      <div className="w-[340px]">
+    <main className=" p-4 md:p-16 lg:p-24 flex min-h-[100vh] justify-center items-center">
+      <div className="w-[320px] md:w-[360px]">
         <h2 className="font-bold text-center mb-8">
           <span className="text-[var(--clr-focussed)]">Tech</span>Spot
         </h2>
+
+
+
+{/* to display error message */}
+        {
+          error && 
+          <div className="w-full border border-[var(--clr-focussed)] p-4 rounded-md mb-4 text-[var(--clr-error)] flex gap-2">
+          <CiWarning className="text-5xl"/>
+           <p>{error}</p>
+        </div>
+        }
 
         <form
           className="px-4 md:px-6 py-8 border border-[var(--clr-light-gray)] rounded-md"
@@ -65,7 +105,7 @@ const Register = () => {
             )}
           </div>
 
-          {/* Email Field */}
+          {/* Photo Field */}
           <div className="flex flex-col my-4">
             <label htmlFor="photo" className="text-sm font-semibold mb-2">
               Photo
@@ -83,25 +123,36 @@ const Register = () => {
             <label htmlFor="password" className="text-sm font-semibold mb-2">
               Password
             </label>
-            <input
-              type="password"
-              placeholder="Enter your password here"
-              {...register("password", {
-                required: true,
-                minLength: 6,
-                maxLength: 10,
-                pattern: /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])/,
-              })}
-              className="py-2 rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm"
-            />
+            <div className="relative">
+              <input
+                type={showPass? "text" : "password"}
+                placeholder="Enter your password here"
+                {...register("password", {
+                  required: true,
+                  minLength: 6,
+                  maxLength: 10,
+                  pattern: /(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])/,
+                })}
+                className="py-2 w-full rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm"
+              />
+              <div className="absolute top-1/2 right-4 -translate-y-1/2 text-xl cursor-pointer" onClick={() => setShowPass(!showPass)}>
+                {
+                  showPass? <IoEyeOffOutline></IoEyeOffOutline> : <IoEyeOutline ></IoEyeOutline>
+                }
+              </div>
+            </div>
             {errors.password?.type === "required" && (
               <span className="text-red-500 text-sm">Password is required</span>
             )}
             {errors.password?.type === "minLength" && (
-              <span className="text-red-500 text-sm">Min Length is 6 characters</span>
+              <span className="text-red-500 text-sm">
+                Min Length is 6 characters
+              </span>
             )}
             {errors.password?.type === "maxLength" && (
-              <span className="text-red-500 text-sm">Max Length is 10 characters</span>
+              <span className="text-red-500 text-sm">
+                Max Length is 10 characters
+              </span>
             )}
             {errors.password?.type === "pattern" && (
               <span className="text-red-500 text-sm">

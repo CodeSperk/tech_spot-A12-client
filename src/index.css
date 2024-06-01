@@ -17,6 +17,11 @@
   /* background-colors */
   --bg-primary: #F6F4FE;
   --bg-secondary: #e0e0f1;
+
+
+  --clr-warning: #F7B217;
+  --clr-success: #448ADE;
+  --clr-error: #EC4034;
 }
 
 body{

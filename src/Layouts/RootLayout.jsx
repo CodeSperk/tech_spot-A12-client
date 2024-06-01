@@ -3,7 +3,6 @@ import Navbar from "../SharedComponents/Navbar/Navbar";
 
 const RootLayout = () => {
   const location = useLocation();
-  console.log(location);
   return (
     <div>
       {(location.pathname !== "/login" && location.pathname !=="/register") && 
