@@ -6,23 +6,24 @@ import { CiWarning } from "react-icons/ci";
 import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Register = () => {
   const [showPass, setShowPass] = useState(false);
   const { createUser, logOutUser } = useAuth();
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
-
-  const successMessage = () => { 
+  const successMessage = () => {
     Swal.fire({
-    icon: "success",
-    title: "Registration Success",
-    showConfirmButton: false,
-    timer: 1500
-  });
-}
-  
+      icon: "success",
+      title: "Registration Success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
+
   const {
     register,
     formState: { errors },
@@ -30,21 +31,41 @@ const Register = () => {
   } = useForm();
   const onSubmit = (data) => {
     setError("");
-   
+
     createUser(data.email, data.password)
       .then((result) => {
         updateProfile(result.user, {
-          displayName:data.name, photoURL:data.photo
+          displayName: data.name,
+          photoURL: data.photo,
         });
-        successMessage();
-        // to avoid auto login after registration
-        logOutUser().then().catch(error => console.log(error));
 
-        navigate("/login");
+        // To save user info to the database
+        const userInfo = {
+          name: data.name,
+          photo: data.photo,
+          email: data.email,
+          role: "user",
+        };
+        axiosPublic.post("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            // to avoid auto login after registration
+            logOutUser()
+              .then()
+              .catch((error) => console.log(error));
+
+            // to display success message
+            successMessage();
+    
+            navigate("/login");
+          }
+        });
+
       })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
-          setError("Already registered with this email. Try with another Email");
+          setError(
+            "Already registered with this email. Try with another Email"
+          );
         }
       });
   };
@@ -56,16 +77,13 @@ const Register = () => {
           <span className="text-[var(--clr-focussed)]">Tech</span>Spot
         </h2>
 
-
-
-{/* to display error message */}
-        {
-          error && 
+        {/* to display error message */}
+        {error && (
           <div className="w-full border border-[var(--clr-focussed)] p-4 rounded-md mb-4 text-[var(--clr-error)] flex gap-2">
-          <CiWarning className="text-5xl"/>
-           <p>{error}</p>
-        </div>
-        }
+            <CiWarning className="text-5xl" />
+            <p>{error}</p>
+          </div>
+        )}
 
         <form
           className="px-4 md:px-6 py-8 border border-[var(--clr-light-gray)] rounded-md"
@@ -125,7 +143,7 @@ const Register = () => {
             </label>
             <div className="relative">
               <input
-                type={showPass? "text" : "password"}
+                type={showPass ? "text" : "password"}
                 placeholder="Enter your password here"
                 {...register("password", {
                   required: true,
@@ -135,10 +153,15 @@ const Register = () => {
                 })}
                 className="py-2 w-full rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm"
               />
-              <div className="absolute top-1/2 right-4 -translate-y-1/2 text-xl cursor-pointer" onClick={() => setShowPass(!showPass)}>
-                {
-                  showPass? <IoEyeOffOutline></IoEyeOffOutline> : <IoEyeOutline ></IoEyeOutline>
-                }
+              <div
+                className="absolute top-1/2 right-4 -translate-y-1/2 text-xl cursor-pointer"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? (
+                  <IoEyeOffOutline></IoEyeOffOutline>
+                ) : (
+                  <IoEyeOutline></IoEyeOutline>
+                )}
               </div>
             </div>
             {errors.password?.type === "required" && (

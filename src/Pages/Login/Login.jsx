@@ -2,54 +2,68 @@ import { useState } from "react";
 import { CiWarning } from "react-icons/ci";
 import { FcGoogle } from "react-icons/fc";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import useAuth from "../../Hooks/useAuth";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Login = () => {
   const [showPass, setShowPass] = useState(false);
-  const {loginUser, googleLogin} = useAuth();
+  const { loginUser, googleLogin } = useAuth();
   const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
 
   // to display success message
-  const successMessage = () => { 
+  const successMessage = () => {
     Swal.fire({
-    icon: "success",
-    title: "Login Success",
-    showConfirmButton: false,
-    timer: 1500
-  });
-}
+      icon: "success",
+      title: "Login Success",
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  };
 
-
-// To login User  with email and password
+  // To login User  with email and password
   const handleLoginUser = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
     loginUser(email, password)
-    .then(() => {
-      successMessage();
-    })
-    .catch(error => {
-      if(error.code === "auth/invalid-credential"){
-        setError("Invalid email / password");
-      }
-    }) 
-  }
+      .then( () => {
+        successMessage();
+        navigate("/");
+      })
+      .catch((error) => {
+        if (error.code === "auth/invalid-credential") {
+          setError("Invalid email / password");
+        }
+      });
+  };
 
-//Login with google
+  //Login with google
   const handleGoogleLogin = () => {
     googleLogin()
-    .then(() => {
-      successMessage();
-    })
-    .catch(error => {
+      .then(result => {
+        
+        // To save user info to the database
+        const userInfo = {
+          name: result.user?.displayName,
+          image: result.user?.photoURL,
+          email: result.user?.email,
+          role: "user"
+        };
+        axiosPublic.post("/users", userInfo)
+        .then(res => {
+          successMessage();
+          navigate("/");
+        })
+      })
+      .catch((error) => {
         setError(error.code);
-     })
-  }
-
+      });
+  };
 
   return (
     <main className=" p-4 md:p-16 lg:p-24 flex min-h-[100vh] justify-center items-center">
@@ -58,21 +72,25 @@ const Login = () => {
           <span className="text-[var(--clr-focussed)]">Tech</span>Spot
         </h2>
 
-
-{/* to display error message */}
-        {
-          error && 
+        {/* to display error message */}
+        {error && (
           <div className="w-full border border-[var(--clr-focussed)] p-4 rounded-md mb-4 text-[var(--clr-error)] flex  items-center gap-2">
-          <CiWarning className="text-3xl"/>
-           <p>{error}</p>
-        </div>
-        }
+            <CiWarning className="text-3xl" />
+            <p>{error}</p>
+          </div>
+        )}
 
-        <form className="px-4 py-8 border border-[var(--clr-light-gray)] rounded-md" onSubmit={handleLoginUser}>
+        <form
+          className="px-4 py-8 border border-[var(--clr-light-gray)] rounded-md"
+          onSubmit={handleLoginUser}
+        >
           <div className="flex justify-between items-center">
             <h5 className="font-semibold">Sign In</h5>
-            <div className="text-2xl py-1 px-1 bg-white rounded-md hover:scale-90 cursor-pointer border-2 duration-300" onClick={handleGoogleLogin}>
-              <FcGoogle/>
+            <div
+              className="text-2xl py-1 px-1 bg-white rounded-md hover:scale-90 cursor-pointer border-2 duration-300"
+              onClick={handleGoogleLogin}
+            >
+              <FcGoogle />
             </div>
           </div>
 
@@ -95,16 +113,21 @@ const Login = () => {
               Password
             </label>
             <div className="relative">
-            <input
-              type={showPass? "text" : "password"}
-              name="password"
-              placeholder="Enter your Password here"
-              className="py-2 rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm w-full"
-            />
-                         <div className="absolute top-1/2 right-4 -translate-y-1/2 text-xl" onClick={() => setShowPass(!showPass)}>
-                {
-                  showPass? <IoEyeOffOutline></IoEyeOffOutline> : <IoEyeOutline ></IoEyeOutline>
-                }
+              <input
+                type={showPass ? "text" : "password"}
+                name="password"
+                placeholder="Enter your Password here"
+                className="py-2 rounded-md px-4 border border-[var(--clr-light-gray)] focus:border-[var(--clr-secondary)] outline-none text-sm w-full"
+              />
+              <div
+                className="absolute top-1/2 right-4 -translate-y-1/2 text-xl"
+                onClick={() => setShowPass(!showPass)}
+              >
+                {showPass ? (
+                  <IoEyeOffOutline></IoEyeOffOutline>
+                ) : (
+                  <IoEyeOutline></IoEyeOutline>
+                )}
               </div>
             </div>
           </div>

@@ -22,7 +22,6 @@ const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logOutUser } = useAuth();
-  console.log(user);
 
   useEffect(() => {
     window.addEventListener(
