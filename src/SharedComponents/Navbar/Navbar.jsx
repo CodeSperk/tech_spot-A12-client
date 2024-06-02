@@ -11,7 +11,7 @@ import {
 import "./navbar.css";
 import { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import logo from "/logo.png";
+import logo from "../../assets/icons&logo/logo.png";
 import avatar from "../../assets/icons&logo/avatar.png";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
 import useAuth from "../../Hooks/useAuth";
