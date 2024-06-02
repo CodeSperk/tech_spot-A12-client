@@ -33,7 +33,7 @@ const MainRoutes = createBrowserRouter([
     element: <PrivateRout><DashboardLayout /></PrivateRout>,
     children: [
       {
-        path: "",
+        path: "/dashboard",
         element: <MyProfile />,
       },
       {
