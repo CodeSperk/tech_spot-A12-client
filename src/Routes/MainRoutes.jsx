@@ -8,6 +8,7 @@ import MyProfile from "../Pages/Dashboard/User/MyProfile/MyProfile";
 import AddProduct from "../Pages/Dashboard/User/AddProduct/AddProduct";
 import MyProduct from "../Pages/Dashboard/User/MyProduct/MyProduct";
 import PrivateRout from "./PrivateRout";
+import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 
 const MainRoutes = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const MainRoutes = createBrowserRouter([
         path: "/register",
         element: <Register />,
       },
+      {
+        path:"/details/:id",
+        element:<ProductDetails />
+      }
     ],
   },
   {
