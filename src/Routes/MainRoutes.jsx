@@ -34,7 +34,7 @@ const MainRoutes = createBrowserRouter([
       },
       {
         path:"/details/:id",
-        element:<ProductDetails />
+        element:<PrivateRout><ProductDetails /></PrivateRout>
       }
     ],
   },

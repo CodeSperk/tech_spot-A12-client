@@ -2,15 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { BiSolidUpvote } from "react-icons/bi";
 import useAuth from "../../../Hooks/useAuth";
-import { Link, useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
 import useUpvote from "../../../Hooks/useUpvote";
 
 const Featured = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const {handleUpvote} = useUpvote();
-  
+
   const {
     isPending,
     data: products = [],
@@ -70,7 +69,7 @@ const Featured = () => {
               {product?.tags.map((tag, idx) => (
                 <small
                   key={idx}
-                  className="text-[var(--clr-secondary)] font-medium text-sm"
+                  className="text-[var(--clr-secondary)] font-medium text-sm bg-[var(--bg-primary)] px-2 rounded-sm"
                 >
                   {tag}
                 </small>
