@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
-import TrendingProductCard from "./TrendingProductCard";
 import { Link } from "react-router-dom";
+import TrendingCard from "./TrendingCard";
 
 const Trending = () => {
   const axiosPublic = useAxiosPublic();
@@ -29,7 +29,7 @@ const Trending = () => {
           </p>
         </div>
 
-        <Link to={`/product/${_id}`}>
+        <Link to="/products">
         <button className="btn1 py-4 bg-[var(--clr-focussed)] text-white">
           View All Products
         </button>
@@ -42,10 +42,10 @@ const Trending = () => {
       {/* Trending cards */}
       <div className="lg:col-span-2 w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
         {trending?.map((item) => (
-          <TrendingProductCard
+          <TrendingCard
             key={item._id}
             product={item}
-          ></TrendingProductCard>
+          ></TrendingCard>
         ))}
       </div>
     </div>

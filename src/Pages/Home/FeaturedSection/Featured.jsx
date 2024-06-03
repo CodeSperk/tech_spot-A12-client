@@ -4,16 +4,16 @@ import { BiSolidUpvote } from "react-icons/bi";
 import useAuth from "../../../Hooks/useAuth";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import useUpvote from "../../../Hooks/useUpvote";
 
 const Featured = () => {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
-  const navigate = useNavigate();
-
+  const {handleUpvote} = useUpvote();
+  
   const {
     isPending,
     data: products = [],
-    refetch,
   } = useQuery({
     queryKey: ["fProducts"],
     queryFn: async () => {
@@ -25,30 +25,7 @@ const Featured = () => {
     isPending && <div> Loading ...</div>;
   }
 
-  const handleUpvote = (product) => {
-    if (!user) {
-      return navigate("/login");
-    }
-
-    if (product?.votedUsers?.includes(user.email)) {
-      Swal.fire({
-        icon: "error",
-        text: "You have already voted for this product",
-      });
-    }
-
-    const currentVote = product.upvote + 1;
-    const newProduct = {
-      currentVote,
-      email: user.email,
-    };
-
-    axiosPublic.patch(`/product/${product._id}`, newProduct).then((res) => {
-      if (res.data.modifiedCount > 0) {
-        refetch();
-      }
-    });
-  };
+  
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 md:px-8 lg:px-10 2xl:px-14">
