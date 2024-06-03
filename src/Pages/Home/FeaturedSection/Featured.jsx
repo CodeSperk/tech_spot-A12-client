@@ -52,12 +52,6 @@ const Featured = () => {
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 md:px-8 lg:px-10 2xl:px-14">
-      {/* Section Title */}
-      <header className="text-center">
-        <h2>Featured Products</h2>
-        <div className="bg-[var(--clr-focussed)] h-1 w-28 mx-auto mt-4"></div>
-      </header>
-
       {/* Products */}
       <div className="mt-8 md:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
         {products.map((product) => (
