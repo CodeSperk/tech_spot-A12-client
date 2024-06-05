@@ -5,13 +5,14 @@ const ReviewCard = ({ review }) => {
   const { reviewerImage, reviewerName, reviewDescription, rating } = review;
 
   return (
-    <div className="shadow-sm p-4 md:p-8 flex flex-col md:flex-row gap-6 items-center my-10 bg-[var(--clr-white)] rounded-md text-start">
-      <div className="w-28 h-28 rounded-full border-4 border-[var(--bg-secondary)] mx-auto">
+    <div className="px-4 md:px-8 flex flex-col gap-6 items-center my-10 rounded-md text-center ">
+      {/* Reviewer Image */}
+      <div className="w-16 h-16 rounded-full border-4 border-[var(--bg-secondary)] mx-auto">
         <img src={reviewerImage} alt="" className="rounded-full" />
       </div>
-      <div className="md:w-3/4">
+      <div className="md:w-3/4 flex flex-col">
         <h5>{reviewerName}</h5>
-        <p className="py-4">{reviewDescription}</p>
+        <p className="py-4 flex-grow">{reviewDescription}</p>
         <StarRatings
           rating={rating}
           starRatedColor="gold"
