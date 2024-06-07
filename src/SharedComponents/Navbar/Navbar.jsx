@@ -26,7 +26,7 @@ const Navbar = () => {
   const { user, logOutUser } = useAuth();
   const [userRole, isUserLoading] = useUserRole(user);
 
-  console.log(userRole === "admin");
+  // console.log(userRole === "admin");
   useEffect(() => {
     window.addEventListener(
       "resize",

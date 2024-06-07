@@ -6,7 +6,7 @@ import TrendingCard from "./TrendingCard";
 const Trending = () => {
   const axiosPublic = useAxiosPublic();
 
-  const {_id, isPending, data: trending = [] } = useQuery({
+  const {isPending, data: trending = [] } = useQuery({
     queryKey: ["TrendingP"],
     queryFn: async () => {
       const res = await axiosPublic.get("/trending");
