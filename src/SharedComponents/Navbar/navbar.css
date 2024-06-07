@@ -3,7 +3,7 @@
   padding: 0 0 4px 0;
   border-bottom: 2px solid transparent;
   border-radius: 0;
-  font-weight: 500;
+  font-weight: 600;
 }
 .nav-list .active{
   color:var(--clr-focussed);

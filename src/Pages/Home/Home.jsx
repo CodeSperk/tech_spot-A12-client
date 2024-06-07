@@ -3,7 +3,10 @@ import SectionTitle from "../../SharedComponents/SectionTitle/SectionTitle";
 import Featured from "./FeaturedSection/Featured";
 import Trending from "./Trending Section/Trending";
 
+
 const Home = () => {
+
+  
   return (
     <div>
       <div className="h-96">{/* bannner */}</div>

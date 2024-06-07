@@ -55,10 +55,9 @@ const Login = () => {
           role: "user"
         };
         axiosPublic.post("/users", userInfo)
-        .then(res => {
-          successMessage();
-          navigate(location?.state ? location.state : "/");
-        })
+        .then()
+        successMessage();
+        navigate(location?.state ? location.state : "/");
       })
       .catch((error) => {
         setError(error.code);

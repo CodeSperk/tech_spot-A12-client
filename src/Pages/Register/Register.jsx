@@ -46,19 +46,20 @@ const Register = () => {
           email: data.email,
           role: "user",
         };
-        axiosPublic.post("/users", userInfo).then((res) => {
+        axiosPublic.post("/users", userInfo)
+        .then((res) => {
           if (res.data.insertedId) {
-            // to avoid auto login after registration
-            logOutUser()
-              .then()
-              .catch((error) => console.log(error));
-
-            // to display success message
-            successMessage();
-    
-            navigate("/login");
+            console.log("success");
           }
         });
+        // to avoid auto login after registration
+        logOutUser()
+          .then()
+          .catch((error) => console.log(error));
+
+        // to display success message
+        successMessage();
+        navigate("/login");
 
       })
       .catch((error) => {

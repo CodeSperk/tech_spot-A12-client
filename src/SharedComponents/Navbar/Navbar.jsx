@@ -17,12 +17,16 @@ import { IoMdClose, IoMdMenu } from "react-icons/io";
 import useAuth from "../../Hooks/useAuth";
 import Swal from "sweetalert2";
 import { MdDashboard } from "react-icons/md";
+import { AiOutlineLogout } from "react-icons/ai";
+import useUserRole from "../../Hooks/useUserRole";
 
 const Navbar = () => {
   const [openNav, setOpenNav] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logOutUser } = useAuth();
+  const [userRole, isUserLoading] = useUserRole(user);
 
+  console.log(userRole === "admin");
   useEffect(() => {
     window.addEventListener(
       "resize",
@@ -48,7 +52,7 @@ const Navbar = () => {
 
   const menuList = (
     <>
-      <List className="flex gap-2 lg:gap-3 lg:flex-row nav-list my-8 lg:my-0">
+      <List className="flex items-center gap-4  md:gap-6 lg:flex-row nav-list my-8 lg:my-0 min-w-0">
         <NavLink to="/" className="item">
           <ListItem className="list duration-500">Home</ListItem>
         </NavLink>
@@ -59,22 +63,26 @@ const Navbar = () => {
     </>
   );
 
+
+  if (user && isUserLoading) return <div>Loading...</div>;
+
   return (
-    <nav className="py-6 md:py-8 lg:py-10">
+    <nav className="py-4 md:py-8">
       <div className="flex items-center justify-between">
         {/* Logo and website name */}
         <div className="cursor-pointer flex items-center gap-2">
-          <img src={logo} alt="" className="w-10" />
+          <img src={logo} alt="" className="w-8" />
           <h3>
             <span className="text-[var(--clr-focussed)]">Tech</span>Spot
           </h3>
         </div>
 
-        {/* Centered Menu for large devices */}
-        <div className="hidden lg:block">{menuList}</div>
-
         {/* Navbar end */}
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-6 items-center">
+          {/* main menu */}
+        <div className="hidden lg:block mt-2">{menuList}</div>
+
+
           {/* Icon to open collapsed menu */}
           <IconButton
             variant="text"
@@ -97,34 +105,34 @@ const Navbar = () => {
               placement="bottom-end"
             >
               <MenuHandler>
-                <div className="w-12 rounded-full border-4 border-[var(--clr-white)] bg-[var(--bg-secondary)] cursor-pointer">
+                <div className="w-12 h-12 rounded-full border-4 border-[var(--clr-white)] bg-[var(--bg-secondary)] cursor-pointer">
                   <img
                     src={user?.photoURL || avatar}
                     alt="User's Profile Picture"
-                    className="rounded-full"
+                    className="rounded-full w-full h-full"
                   />
                 </div>
               </MenuHandler>
               <MenuList className="p-4 text-[var(--clr-primary)]">
                 <div className="outline-none">
                   <p className="text-center">{user?.displayName}</p>
-                <Link to="/dashboard">
+                <Link to={userRole === "admin" ? "/adminDashboard" : userRole === "moderator" ? "/moderatorDashboard" : "/dashboard"}>
                   <div className="my-4 mb-6 font-semibold text-[var(--clr-secondary)] hover:text-[var(--clr-focussed)] flex items-center gap-2 text-base "> <MdDashboard className="text-xl"/> <span>Dashboard</span></div>
                 </Link>
 
-                <button className="btn1 w-full" onClick={handleLogOut}>
-                  Logout
+                <button className="w-full flex items-center gap-4 text-base font-semibold border-t-2 pt-2 text-[var(--clr-focussed)]" onClick={handleLogOut}>
+                 <AiOutlineLogout className="text-xl -rotate-90"/> Logout
                 </button>
                 </div>
               </MenuList>
             </Menu>
           ) : (
-            <div className="hidden gap-2 lg:flex">
+            <div className="hidden gap-2 lg:flex items-center">
               <Link to="/login">
-                <button className="btn1 bg-transparent">Login</button>
+                <button className=" bg-[var(--bg-secondary)] hover:text-[var(--clr-focussed)] py-2 px-4 rounded-sm hover:scale-95 duration-300 font-medium">Login</button>
               </Link>
               <Link to="/register">
-                <button className="btn1 bg-transparent">Register</button>
+                <button className="bg-[var(--clr-focussed)] hover:scale-95 duration-300 font-medium text-white py-2 px-4 rounded-sm">Register</button>
               </Link>
             </div>
           )}

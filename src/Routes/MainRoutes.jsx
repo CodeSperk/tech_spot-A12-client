@@ -10,6 +10,11 @@ import MyProduct from "../Pages/Dashboard/User/MyProduct/MyProduct";
 import PrivateRout from "./PrivateRout";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import Products from "../Pages/Products/Products";
+import Statistics from "../Pages/Dashboard/Admin/Statistics/Statistics";
+import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers/ManageUsers";
+import ManageCoupons from "../Pages/Dashboard/Admin/ManageCoupons/ManageCoupons";
+import ReviewProduct from "../Pages/Dashboard/Moderator/ReviewProduct/ReviewProduct";
+import ReportedProducts from "../Pages/Dashboard/Moderator/ReportedProducts/ReportedProducts";
 
 const MainRoutes = createBrowserRouter([
   {
@@ -43,7 +48,7 @@ const MainRoutes = createBrowserRouter([
     element: <PrivateRout><DashboardLayout /></PrivateRout>,
     children: [
       {
-        path: "/dashboard",
+        path: "",
         element: <MyProfile />,
       },
       {
@@ -56,6 +61,38 @@ const MainRoutes = createBrowserRouter([
       }
     ],
   },
+  {
+    path:"/adminDashboard",
+    element: <PrivateRout><DashboardLayout /></PrivateRout>,
+    children:[
+      {
+        path:"",
+        element:<Statistics />
+      },
+      {
+        path:"manageUsers",
+        element:<ManageUsers />
+      },
+      {
+        path:"manageCoupons",
+        element:<ManageCoupons />
+      }
+    ]
+  },
+  {
+    path:"/moderatorDashboard",
+    element: <PrivateRout><DashboardLayout /></PrivateRout>,
+    children:[
+      {
+        path:"",
+        element:<ReviewProduct />
+      },
+      {
+        path:"reported",
+        element:<ReportedProducts />
+      }
+    ]
+  }
 ]);
 
 export default MainRoutes;
