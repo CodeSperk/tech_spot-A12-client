@@ -45,10 +45,10 @@ const AddProduct = () => {
     "No Coding",
     "Mobile Development"
   ]
-  const suggestions = productTagSuggession.map((country) => {
+  const suggestions = productTagSuggession.map((tag) => {
     return {
-      id: country,
-      text: country,
+      id: tag,
+      text: tag,
       className: "",
     };
   });
@@ -60,10 +60,6 @@ const AddProduct = () => {
 
 const handleAddition = (tag) => {
   setTags([...tags, tag.text]);
-};
-
-const handleTagClick = (index) => {
-  console.log('The tag at index ' + index + ' was clicked');
 };
 
 const handleAddProduct = (e) => {
@@ -144,9 +140,7 @@ const handleAddProduct = (e) => {
           separators={[SEPARATORS.ENTER, SEPARATORS.COMMA]}
               handleDelete={handleDelete}
               handleAddition={handleAddition}
-              handleTagClick={handleTagClick}
               inputFieldPosition="bottom"
-              autocomplete
               maxTags={7}
               allowAdditionFromPaste
             />

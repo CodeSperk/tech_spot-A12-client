@@ -22,7 +22,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-
   span.ReactTags__tag {
     border: 1px solid #ddd;
     background: var(--clr-focussed);
