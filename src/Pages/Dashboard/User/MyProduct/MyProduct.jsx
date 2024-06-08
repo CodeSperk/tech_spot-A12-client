@@ -1,9 +1,112 @@
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "../../../../Hooks/useAuth";
+import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
+import { Link } from "react-router-dom";
+import { MdEdit, MdOutlineDelete } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const MyProduct = () => {
+  const { user } = useAuth();
+  const axiosSecure = useAxiosSecure();
+
+  // to fetch product data
+  const {
+    data: myProducts = [],
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: ["myProducts", user?.email],
+    queryFn: async () => {
+      const res = await axiosSecure.get(`/myProducts?email=${user?.email}`);
+      return res.data;
+    },
+  });
+
+  isLoading && <div>Loading...</div>;
+
+
+  // to delete product
+  const handleDeleteProduct = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#FF1749",
+      cancelButtonColor: "#555555",
+      confirmButtonText: "Delete!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axiosSecure.delete(`/deleteProduct/${id}`)
+        .then((res) => {
+          if (res.data.deletedCount > 0) {
+            Swal.fire({
+              icon: "success",
+              confirmButtonColor: "#448ADE",
+              title: "Job Deleted Successful",
+              timer: 2500,
+            });
+            refetch();
+          }
+        });
+      }
+    });
+  };
+
   return (
-    <div>
-      My Products ....
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores similique, recusandae dolorum perferendis aperiam molestias eveniet sint nam in. Quas animi ea obcaecati earum delectus? Magnam ipsa quo sint pariatur, amet explicabo ea quis. Consectetur autem eveniet fuga ad porro quas at non, sint dolore ipsam, ab temporibus ea excepturi eligendi optio id ex. Minus eos sit sequi quis, quidem dolore mollitia perferendis nesciunt temporibus maxime blanditiis officia quisquam? Accusantium, ratione aliquam, consectetur ea minus in sequi odio harum, eum dolorem autem ullam delectus suscipit? Ipsam voluptate nulla explicabo illo voluptates deserunt nam id eveniet possimus at facere soluta, cumque autem consequuntur nihil, cum perspiciatis sapiente distinctio rerum iste, obcaecati quibusdam nesciunt aut accusantium? Minima eveniet corporis, animi molestiae autem numquam at! Impedit ducimus expedita laudantium id ullam eius, quis voluptas provident iure sint soluta sed neque praesentium harum vel quo aut animi voluptate, laboriosam quos unde accusamus. Minima optio obcaecati distinctio, maiores quisquam recusandae error totam eligendi facilis laboriosam harum quo eos incidunt aut praesentium, voluptatibus quis, soluta temporibus et placeat dolorum corporis. A, reiciendis. Laborum, reprehenderit officia voluptatum asperiores reiciendis quasi neque vitae omnis vero aliquam, exercitationem dolorem similique voluptates impedit magnam necessitatibus voluptas optio laboriosam ad labore nam quos consequuntur alias a. Enim sint sunt nobis id obcaecati tenetur dicta quos blanditiis officia modi. Nobis aperiam animi tenetur eveniet delectus praesentium quis, asperiores perspiciatis velit veniam ipsum totam aliquam deserunt sint dignissimos, nulla ipsa voluptates? Delectus exercitationem quidem quaerat cum quia cumque facilis aperiam deleniti! Voluptas perferendis temporibus corrupti, dolor quas quae, atque veritatis eveniet numquam praesentium quo rerum eligendi sint qui eius veniam cum rem dolorum omnis exercitationem magnam? Atque perferendis ipsum esse, harum tenetur corporis! Reiciendis vero ex dicta iusto, corrupti quaerat beatae fuga, voluptatum aspernatur tempora libero accusamus porro velit, explicabo ab expedita provident optio! Omnis veritatis maiores assumenda consequuntur quasi ea qui architecto nesciunt reprehenderit, eveniet, aliquam voluptatum, non at rerum reiciendis aut quaerat asperiores eaque aliquid deserunt optio quo! Molestiae reiciendis, nemo at rerum totam nam culpa! Aliquam veniam alias nostrum quis asperiores, quod voluptates adipisci vero eveniet vitae deserunt ducimus fugit quidem quas necessitatibus consectetur esse atque dignissimos ratione error. Hic suscipit ut officiis, aperiam odio facere incidunt cum, corrupti dolore quasi eos ad eligendi in. Eos expedita consequatur beatae doloremque? Consectetur deleniti libero at qui quas doloribus quibusdam! Eligendi recusandae suscipit veritatis perferendis dolore adipisci itaque mollitia! Ipsa a eligendi iure magnam, non perspiciatis officia temporibus animi beatae distinctio quae perferendis labore, mollitia facilis ipsam rem tempore nisi consectetur voluptates deserunt nesciunt hic? Vero nesciunt ducimus eius odit. Dolores aut rerum rem in nemo tempore dolorem ipsum? Aspernatur, ipsa neque! Illum non perferendis eveniet deleniti eos laborum, fugit voluptates tenetur laboriosam placeat. Dolor, cum eum illo omnis voluptatum aliquam expedita autem impedit magnam, vitae deleniti beatae numquam asperiores possimus. Dolorum illum ea, reprehenderit iusto pariatur, consequuntur exercitationem eveniet quod unde debitis harum, nihil mollitia alias libero sit porro consectetur rem recusandae deserunt dolorem doloremque in quo. Corrupti quasi officia asperiores.
+    <div className="mx-auto max-w-[1440px] px-4 md:px-8 lg:px-10 2xl:px-14 mt-6 md:mt-8">
+      <table className="w-full text-left table-auto min-w-max bg-white">
+        <thead>
+          <tr className="font-bold bg-[var(--bg-secondary)] text-sm border-b border-[var(--clr-light-gray)]">
+            <th className="p-4 text-[var(--clr-secondary)]">Product Name</th>
+            <th className="p-4 text-[var(--clr-secondary)]">Votes</th>
+            <th className="p-4 text-[var(--clr-secondary)]">Status</th>
+            <th className="p-4 text-[var(--clr-secondary)]">Update</th>
+            <th className="p-4 text-[var(--clr-secondary)]">Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {myProducts.length > 0 &&
+            myProducts.map((product) => (
+              <tr
+                key={product._id}
+                className="border-b border-[var(--clr-light-gray)] text-sm"
+              >
+                <td className="p-4 capitalize"> {product?.productName} </td>
+                <td className="p-4"> {product?.upvote} </td>
+                {/* status */}
+                <td className="p-4">
+                  <p
+                    className={`${
+                      product?.status === "pending"
+                        ? "bg-yellow-100 text-[#F7B217]"
+                        : product?.status === "accepted"
+                        ? "bg-blue-100 text-[#448ADE]"
+                        : product?.status === "rejected"
+                        ? "bg-red-100 text-red-500"
+                        : ""
+                    }  w-fit px-2 py-1 text-[12px] rounded-md font-bold uppercase`}
+                  >
+                    {product?.status}
+                  </p>
+                </td>
+
+                <td className="p-4">
+                  <Link to={`/dashboard/update/${product._id}`}>
+                    <div className="px-4 bg-[var(--bg-secondary)] w-fit py-1 rounded-sm text-lg cursor-pointer hover:scale-110 duration-500">
+                    <MdEdit />
+                    </div>
+                  </Link>
+                </td>
+                  
+                <td className="p-4" >
+                    <div className="px-4 bg-red-100 text-red-500 w-fit py-1 rounded-sm text-lg cursor-pointer hover:scale-110 duration-500" onClick={() => handleDeleteProduct(product._id)}>
+                    <MdOutlineDelete />
+                    </div>
+                </td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
     </div>
   );
 };

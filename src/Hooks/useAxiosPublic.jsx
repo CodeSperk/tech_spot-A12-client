@@ -4,7 +4,7 @@ const axiosPublic = axios.create({
   baseURL: "http://localhost:5000"
 })
 
-// "https://b9a12-final-project.web.app"
+// "https://techspot-kohl.vercel.app"
 // "http://localhost:5000"
 
 const useAxiosPublic = () => {

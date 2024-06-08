@@ -15,6 +15,8 @@ import ManageUsers from "../Pages/Dashboard/Admin/ManageUsers/ManageUsers";
 import ManageCoupons from "../Pages/Dashboard/Admin/ManageCoupons/ManageCoupons";
 import ReviewProduct from "../Pages/Dashboard/Moderator/ReviewProduct/ReviewProduct";
 import ReportedProducts from "../Pages/Dashboard/Moderator/ReportedProducts/ReportedProducts";
+import UpdateProduct from "../Pages/Dashboard/User/Update/UpdateProduct";
+
 
 const MainRoutes = createBrowserRouter([
   {
@@ -59,6 +61,10 @@ const MainRoutes = createBrowserRouter([
       {
         path: "myProducts",
         element:<MyProduct />
+      },
+      {
+        path: "update/:id",
+        element:<UpdateProduct />
       }
     ],
   },

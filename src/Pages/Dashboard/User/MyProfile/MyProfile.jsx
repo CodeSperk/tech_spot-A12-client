@@ -2,8 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import useAuth from "../../../../Hooks/useAuth";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useState } from "react";
-import { Button, Card, CardBody, CardFooter, Checkbox, Dialog, Typography } from "@material-tailwind/react";
-import { Input } from "postcss";
+import { Dialog } from "@material-tailwind/react";
 
 const MyProfile = () => {
   const { user } = useAuth();
@@ -65,7 +64,7 @@ const MyProfile = () => {
         handler={handleOpen}
         className="bg-transparent shadow-none"
       >
-       <div className="bg-[var(--clr-white)] p-4 md:p-6 lg:p-10">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium amet nam reiciendis, non cupiditate dignissimos, sed ullam nulla nihil modi consectetur ipsa error. Excepturi iste quos consequatur voluptatem veniam rerum dolore, illo aliquam, consectetur possimus repellat illum. Consectetur obcaecati animi laboriosam tempore quaerat sunt, sequi maxime quia minima hic doloribus.</div>
+       <div className="bg-[var(--clr-white)] p-4 md:p-6 lg:p-10">Payment Info: Pay Here</div>
       </Dialog>
     </div>
   );
