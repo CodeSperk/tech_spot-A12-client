@@ -147,6 +147,7 @@ const handleLogout = () => {
             </div>
         </aside>
 
+              {/* sidebar toggle button */}
         <div
           className={`transition-all duration-300 ${
             isOpen ? "left-[280px]" : "left-20"

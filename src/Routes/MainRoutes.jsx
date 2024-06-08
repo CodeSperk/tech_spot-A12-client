@@ -43,6 +43,7 @@ const MainRoutes = createBrowserRouter([
       }
     ],
   },
+  // User Dashboard
   {
     path: "/dashboard",
     element: <PrivateRout><DashboardLayout /></PrivateRout>,
@@ -61,6 +62,7 @@ const MainRoutes = createBrowserRouter([
       }
     ],
   },
+  // Admin Dashboard
   {
     path:"/adminDashboard",
     element: <PrivateRout><DashboardLayout /></PrivateRout>,
@@ -79,6 +81,7 @@ const MainRoutes = createBrowserRouter([
       }
     ]
   },
+  // Moderator Dashboard
   {
     path:"/moderatorDashboard",
     element: <PrivateRout><DashboardLayout /></PrivateRout>,

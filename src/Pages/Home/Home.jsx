@@ -5,7 +5,6 @@ import Trending from "./Trending Section/Trending";
 
 
 const Home = () => {
-
   
   return (
     <div>
