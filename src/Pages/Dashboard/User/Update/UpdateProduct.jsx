@@ -105,8 +105,8 @@ const UpdateProduct = () => {
       if(res.data.modifiedCount > 0){
         Swal.fire({
           icon: "success",
-          iconColor: "#FF1749",
-          confirmButtonColor: "#FF1749",
+          iconColor: "#448ADE",
+          confirmButtonColor: "#448ADE",
           title: "Product Updated Successfully",
           timer: 2500
         });

@@ -42,6 +42,7 @@ const MyProduct = () => {
           if (res.data.deletedCount > 0) {
             Swal.fire({
               icon: "success",
+              iconColor: "#448ADE",
               confirmButtonColor: "#448ADE",
               title: "Job Deleted Successful",
               timer: 2500,
