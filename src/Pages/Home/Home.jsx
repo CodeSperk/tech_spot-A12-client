@@ -42,8 +42,6 @@ const Home = () => {
                 </button>
               </Link>
             </div>
-            
-              
               <CouponSection />
             
           </div>
