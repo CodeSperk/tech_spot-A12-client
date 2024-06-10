@@ -54,7 +54,7 @@ const Login = () => {
           email: result.user?.email,
           role: "user"
         };
-        axiosPublic.post("/users", userInfo)
+        axiosPublic.post("/user", userInfo)
         .then()
         successMessage();
         navigate(location?.state ? location.state : "/");

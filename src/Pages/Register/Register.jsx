@@ -46,7 +46,7 @@ const Register = () => {
           email: data.email,
           role: "user",
         };
-        axiosPublic.post("/users", userInfo)
+        axiosPublic.post("/user", userInfo)
         .then((res) => {
           if (res.data.insertedId) {
             console.log("success");

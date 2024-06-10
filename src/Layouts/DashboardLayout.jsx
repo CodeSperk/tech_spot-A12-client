@@ -165,7 +165,7 @@ const handleLogout = () => {
       <main className={`${isOpen ? 'ml-[275px]' : 'ml-[70px]'}`}>
         {/* dashboard top */}
         <div className="bg-[#fdf9ff] border-b border-[var(--clr-light-gray)] py-6 px-10 text-center pl-16">
-          <h3>Welcome to dashboard</h3>
+          <h3>Welcome to your dashboard</h3>
         </div>
         <Outlet></Outlet>
       </main>
