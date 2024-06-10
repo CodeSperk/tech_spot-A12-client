@@ -28,7 +28,6 @@ const ReviewProduct = () => {
           return order[a.status] - order[b.status];
         })
       : [];
-  console.log(sortedProducts);
 
   // to make product featured
   const handleMakeFeature = (nonFeaturedId) => {
@@ -137,7 +136,7 @@ const ReviewProduct = () => {
                       </button>
                     </td>
                   ) : (
-                    <div className="ml-10 p-4">---</div>
+                    <td className="ml-10 p-4">---</td>
                   )}
                 </tr>
               ))}

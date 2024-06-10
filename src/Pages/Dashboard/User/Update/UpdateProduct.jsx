@@ -34,7 +34,6 @@ const UpdateProduct = () => {
   if (isLoading) {
     return <div>Loading .....</div>;
   }
-  console.log(product);
 
 
   // React Tags related functions
