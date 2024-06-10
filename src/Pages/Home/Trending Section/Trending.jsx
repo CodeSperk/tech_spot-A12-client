@@ -31,7 +31,7 @@ const Trending = () => {
 
         <Link to="/products">
         <button className="btn1 py-4 bg-[var(--clr-focussed)] text-white">
-          View All Products
+          Show All Products
         </button>
         </Link>
         <div className="absolute h-full w-full border-2 border-dashed top-4 left-4 -z-10">

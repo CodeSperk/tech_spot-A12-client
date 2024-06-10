@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 import { BiUpvote } from "react-icons/bi";
-import { MdDeleteOutline, MdOutlineReportGmailerrorred } from "react-icons/md";
+import { MdOutlineReportGmailerrorred } from "react-icons/md";
 import useUpvote from "../../Hooks/useUpvote";
 import useAuth from "../../Hooks/useAuth";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -99,6 +99,23 @@ const ProductDetails = () => {
    })
   }
 
+  // to report product
+  const handleReportProduct = (reportedId) => {
+    axiosSecure.patch(`/report/${reportedId}`)
+    .then((res) => {
+      if(res.data.modifiedCount > 0){
+        Swal.fire({
+          icon: "success",
+          iconColor: "#448ADE",
+          confirmButtonColor: "#448ADE",
+          title: "Reported! Moderator will review the product soon",
+          timer: 2500
+        });
+      refetch();
+      }
+    });
+  }
+
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 md:px-8 lg:px-10 2xl:px-14">
@@ -157,20 +174,18 @@ const ProductDetails = () => {
             {" "}
             <BiUpvote /> upvote {upvote}
           </button>
-          <button className="flex items-center justify-center gap-2 bg-[var(--clr-focussed)] text-[var(--clr-white)]  px-2 py-1 rounded hover:scale-105 duration-300 w-32">
+          <button className="flex items-center justify-center gap-2 bg-[var(--clr-focussed)] text-[var(--clr-white)]  px-2 py-1 rounded hover:scale-105 duration-300 w-32"
+          onClick={() => handleReportProduct(_id)}>
             {" "}
             <MdOutlineReportGmailerrorred /> Report
-          </button>
-          <button className="flex items-center justify-center gap-2 bg-[var(--clr-focussed)] text-[var(--clr-white)]  px-2 py-1 rounded hover:scale-105 duration-300 w-32">
-            {" "}
-            <MdDeleteOutline /> Delete
           </button>
         </div>
       </section>
 
       {/* Review section 
       ----------------------*/}
-      <section className="mt-16 md:mt-20">
+      {
+        reviews.length > 0 && <section className="mt-16 md:mt-20">
         <SectionTitle title={`User Experiences with ${productName}`} />
         <Swiper
           modules={[Pagination, Autoplay]}
@@ -202,6 +217,7 @@ const ProductDetails = () => {
           ))}
         </Swiper>
       </section>
+      }
 
       {/* Review input section 
       ----------------------------*/}

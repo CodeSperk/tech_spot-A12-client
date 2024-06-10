@@ -44,7 +44,7 @@ const MyProduct = () => {
               icon: "success",
               iconColor: "#448ADE",
               confirmButtonColor: "#448ADE",
-              title: "Job Deleted Successful",
+              title: "Product Deleted Successful",
               timer: 2500,
             });
             refetch();

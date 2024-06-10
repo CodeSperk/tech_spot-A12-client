@@ -4,7 +4,11 @@ import { Link } from "react-router-dom";
 
 const ReviewProduct = () => {
   const axiosSecure = useAxiosSecure();
-  const { data: products = [], isLoading, refetch } = useQuery({
+  const {
+    data: products = [],
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["allProducts"],
     queryFn: async () => {
       const res = await axiosSecure.get("/allProducts");
@@ -17,38 +21,38 @@ const ReviewProduct = () => {
   }
 
   // sort product to display pending product first
-  const sortedProducts = products.length > 0 ? products.sort((a, b) => {
-    const order = { pending: 0, accepted: 1, rejected: 2};
-    return order[a.status] - order[b.status];
-  }) : [];
+  const sortedProducts =
+    products.length > 0
+      ? products.sort((a, b) => {
+          const order = { pending: 0, accepted: 1, rejected: 2 };
+          return order[a.status] - order[b.status];
+        })
+      : [];
   console.log(sortedProducts);
 
   // to make product featured
-  const handleMakeFeature = nonFeaturedId => {
-    axiosSecure.patch(`/featured/${nonFeaturedId}`)
-    .then(res  => {
+  const handleMakeFeature = (nonFeaturedId) => {
+    axiosSecure.patch(`/featured/${nonFeaturedId}`).then((res) => {
       console.log(res.data);
       refetch();
-    })
-  }
+    });
+  };
 
   // To accept product
-  const handleAcceptProduct = pendingId => {
-    axiosSecure.patch(`/accepted/${pendingId}`)
-    .then(res  => {
+  const handleAcceptProduct = (pendingId) => {
+    axiosSecure.patch(`/accepted/${pendingId}`).then((res) => {
       console.log(res.data);
       refetch();
-    })
-  }
+    });
+  };
 
   // To rejected product
-  const handleRejectProduct = pendingId => {
-    axiosSecure.patch(`/rejected/${pendingId}`)
-    .then(res  => {
+  const handleRejectProduct = (pendingId) => {
+    axiosSecure.patch(`/rejected/${pendingId}`).then((res) => {
       console.log(res.data);
       refetch();
-    })
-  }
+    });
+  };
 
   return (
     <div className="mx-auto max-w-[1440px] px-4 md:px-8 lg:px-10 2xl:px-14 py-10 lg:py-12">
@@ -58,9 +62,9 @@ const ReviewProduct = () => {
             <tr className="font-normal border-b border-[var(--clr-light-gray)] bg-[var(--bg-secondary)] text-[var(--clr-primary)]">
               <th className="p-4">Product Name</th>
               <th className="p-4">Details</th>
-              <th className="p-4">Make  Feature</th>
-              <th className="p-4">Accept Product</th>
-              <th className="p-4">Reject Product</th>
+              <th className="p-4">Make Featured</th>
+              <th className="p-4">Status</th>
+              <th className="p-4">Action</th>
             </tr>
           </thead>
 
@@ -79,35 +83,62 @@ const ReviewProduct = () => {
                   </td>
                   {/* Make featured */}
                   <td className="p-4">
-                    <button className={`${product?.featured ? "bg-gray-200 text-[var(--clr-secondary)]" : "bg-blue-50 text-blue-500 hover:scale-110"} px-2 py-[2px] rounded duration-500 font-semibold text-[12px]`}
+                   {
+                    product?.status === "accepted" ?  <button
+                    className={`${
+                      product?.featured
+                        ? "bg-gray-200 text-[var(--clr-secondary)]"
+                        : "bg-green-50 text-green-500 hover:scale-110"
+                    } px-2 py-[2px] rounded duration-500 font-semibold text-[12px]`}
                     disabled={product?.featured}
                     onClick={() => handleMakeFeature(product._id)}
+                  >
+                    {product?.featured ? "Featured" : "Make Featured"}
+                  </button> : ""
+                   }
+                  </td>
+
+                  {/* Product Status */}
+                  <td className="p-4">
+                    <button
+                      className={`${
+                        product?.status === "accepted"
+                          ? "bg-blue-50 text-[#448ADE]"
+                          : product?.status === "rejected"
+                          ? "bg-red-50 text-[var(--clr-focussed)]"
+                          : "bg-orange-50 text-orange-500"
+                      }  px-2 py-[2px] rounded font-semibold text-[12px]`}
+                      disabled="disabled"
                     >
-                      {product?.featured ? "Featured" : "Make Featured"}
+                      {product?.status === "pending"
+                        ? "Pending"
+                        : product?.status === "accepted"
+                        ? "Accepted"
+                        : "Rejected"}
                     </button>
                   </td>
 
-                   {/* Accept product */}
-              <td className="p-4">
-                <button className={`${product?.status === "accepted"? "bg-gray-200 text-[var(--clr-secondary)]"  : "bg-orange-50 text-orange-500 hover:scale-110" }  px-2 py-[2px] rounded  duration-500 font-semibold text-[12px]`}
-                disabled={product?.status === "accepted"}
-                onClick={() => handleAcceptProduct(product._id)}
-                >
-                  {product?.status === "pending" ? "Pending" : product?.status === "accepted" ? "Accepted" : ""}
-                </button>
-              </td>
+                  {/* Action Buttons (accept and reject) */}
 
-              {/* Reject product */}
-              <td className="p-4">
-                <button className={`${product?.status === "rejected"? "bg-gray-200 text-[var(--clr-secondary)]"  : "bg-orange-50 text-orange-500 hover:scale-110" }  px-2 py-[2px] rounded  duration-500 font-semibold text-[12px]`}
-                disabled={product?.status === "rejected"}
-                onClick={() => handleRejectProduct(product._id)}
-                >
-                  {product?.status === "pending" ? "Pending" : product?.status === "rejected" ? "Rejected" : ""}
-                </button>
-              </td>
-
-
+                  {product?.status === "pending" ? (
+                    <td className="p-4 flex gap-2">
+                      <button
+                        className="bg-green-50 text-green-500 hover:scale-110 px-2 py-[2px] rounded duration-500 font-semibold text-[12px]"
+                        onClick={() => handleAcceptProduct(product._id)}
+                      >
+                        Accept
+                      </button>
+                      <button
+                        className="bg-orange-50 text-[12px] text-[#F7B217] py-0.5 hover:scale-110
+                        px-2 rounded  duration-500 font-semibold"
+                        onClick={() => handleRejectProduct(product._id)}
+                      >
+                        Reject
+                      </button>
+                    </td>
+                  ) : (
+                    <div className="ml-10 p-4">---</div>
+                  )}
                 </tr>
               ))}
           </tbody>

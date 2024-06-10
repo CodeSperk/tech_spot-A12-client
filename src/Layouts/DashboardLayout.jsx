@@ -151,7 +151,7 @@ const handleLogout = () => {
         <div
           className={`transition-all duration-300 ${
             isOpen ? "left-[280px]" : "left-20"
-          } h-[40px] w-[45px] border border-[var(--clr-light-gray)] hover:border-[var(--clr-focussed)] cursor-pointer fixed top-5 rounded-md bg-[var(--clr-white)] flex justify-center items-center hover:text-[var(--clr-focussed)]`}
+          } h-[40px] w-[45px] border border-[var(--clr-light-gray)] hover:border-[var(--clr-focussed)] cursor-pointer fixed top-5 rounded-md bg-[var(--clr-white)] flex justify-center items-center hover:text-[var(--clr-focussed)] z-20`}
           onClick={toggleSidebar}
         >
           {isOpen ? (
