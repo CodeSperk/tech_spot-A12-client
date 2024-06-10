@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import SectionTitle from "../../SharedComponents/SectionTitle/SectionTitle";
 import Featured from "./FeaturedSection/Featured";
 import Trending from "./Trending Section/Trending";
-
+import CouponSection from "./CouponSection/CouponSection";
+import useAuth from "../../Hooks/useAuth";
 
 const Home = () => {
-  
+  const {user} = useAuth();
   return (
     <div>
       <div className="h-96">{/* bannner */}</div>
@@ -27,7 +28,28 @@ const Home = () => {
           </Link>
         </section>
 
-        <section className="h-96 bg-white mt-20"></section>
+        {/* coupon code section */}
+        <section className="mt-12 md:mt-16 lg:mt-20 bg-red-50 py-10">
+          <div className="max-w-[1440px] mx-auto px-4 md:px-8 lg:px-10 2xl:px-14 flex flex-col md:flex-row items-center gap-4">
+            <div className="space-y-2 text-center md:text-start">
+              <h3>Get upto 70% discount</h3>
+              <p>
+              Subscribe now unlimited upload with exclusive discounts and early access to limited-time promotions. Save big with our coupons!
+              </p>
+              <Link to="/dashboard">
+                <button className="bg-[var(--clr-focussed)] text-[var(--clr-white)] py-3 px-6 mt-6 rounded hover:scale-95 duration-300">
+                  Subscribe Now
+                </button>
+              </Link>
+            </div>
+            
+              
+              <CouponSection />
+            
+          </div>
+        </section>
+
+        <div className="h-96"></div>
       </main>
     </div>
   );
