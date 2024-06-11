@@ -278,8 +278,6 @@ const ProductDetails = () => {
           </div>
         </div>
       </section>
-
-      <div className="h-96"></div>
     </div>
   );
 };
