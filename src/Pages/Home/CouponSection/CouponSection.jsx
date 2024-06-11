@@ -1,25 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination, Autoplay } from "swiper/modules";
 
 import "swiper/css/bundle";
 import "./couponSwiper.css"
+import useCoupon from "../../../Hooks/useCoupon";
 
 const CouponSection = () => {
-  const axiosPublic = useAxiosPublic();
-  const { isLoading, data: coupons = [] } = useQuery({
-    queryKey: ["allCoupon"],
-    queryFn: async () => {
-      const res = await axiosPublic.get("/coupons");
-      return res.data;
-    },
-  });
+  const [isCouponLoading, coupons] = useCoupon();  
 
-  if (isLoading) {
+  if (isCouponLoading) {
     return <div>Loading....</div>;
   }
-  console.log(coupons);
 
   return (
     <>

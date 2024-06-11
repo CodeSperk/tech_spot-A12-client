@@ -3,24 +3,62 @@ import useAuth from "../../../../Hooks/useAuth";
 import useAxiosSecure from "../../../../Hooks/useAxiosSecure";
 import { useState } from "react";
 import { Dialog } from "@material-tailwind/react";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from "./CheckOutForm";
+import useCoupon from "../../../../Hooks/useCoupon";
+
+// ToDo add  publishable key
+const stripePromise = loadStripe(import.meta.env.VITE_Payment_GateWay_PK);
 
 const MyProfile = () => {
+  const [open, setOpen] = useState(false);
+  const [couponCode, setCouponCode] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(50);
+  const [isCouponLoading, coupons] = useCoupon();
+  const [couponError, setCouponError] = useState("");
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
-  const [open, setOpen] = useState(false);
+
+
+
   const handleOpen = () => setOpen((cur) => !cur);
 
-  const { data: userInfo = [], isLoading } = useQuery({
+  // to load users
+  const { data: userInfo = [], isLoading, refetch } = useQuery({
     queryKey: ["userInfo", user?.email],
     queryFn: async () => {
       const res = await axiosSecure.get(`/user?email=${user.email}`);
       return res.data;
     },
   });
-  if (isLoading) {
+  if (isLoading || isCouponLoading) {
     return <div>Loading ....</div>;
   }
-  console.log(userInfo.subscriptionStatus);
+
+
+  const initialSubscriptionFee = 50;
+
+  const handleCouponChange = (e) => {
+    const code = e.target.value;
+    setCouponCode(code);
+  };
+
+  const handleApplyCoupon = () => {
+    const coupon = coupons.find(coupon => coupon.couponCode === couponCode);
+    if(coupon){
+      setCouponError("")
+      const discountAmount = (initialSubscriptionFee * coupon.discountAmount) / 100;
+      setDiscount(discountAmount);
+      setTotalPrice(initialSubscriptionFee - discountAmount);
+    }else{
+      setCouponError("Invalid Coupon")
+      setDiscount(0);
+      setTotalPrice(initialSubscriptionFee);
+    }
+  }
+
 
   
   return (
@@ -48,23 +86,70 @@ const MyProfile = () => {
               <div>
                 {
                   userInfo?.subscriptionStatus === "varified" ? <button className="bg-[var(--clr-focussed)] text-white py-2 px-4 rounded-md">Status : Verified</button>  :
-                  <button className="bg-[var(--clr-focussed)] text-white py-2 px-4 rounded-md" onClick={handleOpen}>Subscribe : 500Tk</button>
+                  <button className="bg-[var(--clr-focussed)] text-white py-2 px-4 rounded-md" onClick={handleOpen}>Subscribe : $ 50</button>
                 }
               </div>
         </div>
       </div>
 
-
-
-
-      {/* Modal */}
+      {/* Modal for Payment */}
       <Dialog
         size="xs"
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-none"
       >
-       <div className="bg-[var(--clr-white)] p-4 md:p-6 lg:p-10">Payment Info: Pay Here</div>
+       <div className="bg-[var(--clr-white)] p-4 md:p-6 lg:p-8 rounded-md">
+
+        {/* To apply coupon */}
+        <h3 className="text-center mb-6">Payment Form</h3>
+
+        {/* to calculate payment amount */}
+        <div className="border p-4 shadow-sm rounded-md">
+          {/* to display error message */}
+          <small className="text-[#F7B217]">{couponError}</small>
+          <div className="flex gap-6 justify-between">
+            <p>Subscription fee : </p>
+            <p>$ {initialSubscriptionFee}</p>
+          </div>
+          {/* to apply coupon */}
+            {
+              discount === 0 && (<form className="relative my-4">
+              <input 
+              type="text" 
+              className="bg-blue-50 w-full py-1 px-4 rounded border outline-none" 
+              value={couponCode}
+              placeholder="Apply Coupon Code"
+              onChange={handleCouponChange}
+              />
+              <button 
+              type="button"
+              className="absolute right-0 top-0 bg-[var(--clr-focussed)] text-white rounded px-4 h-full"
+              onClick={handleApplyCoupon}
+              >Apply</button>
+            </form>
+          )}
+          {
+            discount > 0 && <div className="flex gap-6 justify-between py-4">
+            <p>Discount: </p>
+            <p>$ {discount}</p>
+          </div>
+          }
+          <div className="flex gap-12 border-t pt-2 justify-between">
+            <p>Total Payment :</p>
+            <p>$ {totalPrice}</p>
+          </div>
+          
+        </div>
+
+          {/* Payment Card */}
+
+        <Elements stripe={stripePromise}>
+        <CheckOutForm refetch={refetch} totalPrice={totalPrice} setOpen={setOpen}/>
+       </Elements>
+     
+      
+       </div>
       </Dialog>
     </div>
   );
