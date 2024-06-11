@@ -81,7 +81,6 @@ const handleAddProduct = (e) => {
     timestamp: new Date(),
     votedUsers: []
   };
-  console.log(productData);
 
   axiosSecure.post("/addProduct", productData)
   .then(res => {
@@ -96,7 +95,18 @@ const handleAddProduct = (e) => {
       navigate ("/dashboard/myProducts");
     }
   })
-
+  .catch(error => {
+    let errorMessage = "Error. Please try again.";
+    if (error.response && error.response.data && error.response.data.message) {
+      errorMessage = error.response.data.message;
+    } 
+    Swal.fire({
+      icon: "error",
+      title: errorMessage,
+      text: "Subscribed to add unlimited  product",
+      showConfirmButton: true,
+    });
+  });
 };
 
   return (    

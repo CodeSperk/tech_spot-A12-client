@@ -9,7 +9,7 @@ import CheckOutForm from "./CheckOutForm";
 import useCoupon from "../../../../Hooks/useCoupon";
 
 // ToDo add  publishable key
-const stripePromise = loadStripe(import.meta.env.VITE_Payment_GateWay_PK);
+const stripePromise = loadStripe("pk_test_51PQVM4P1Zy2c3ahm8B9HmGIWCR7uTCLqlpp1NAuJWDe99CPshcFgJMYaxUls1OQQqPzTTv9dJuScP6CHUg6bvKni00XAHdd76k");
 
 const MyProfile = () => {
   const [open, setOpen] = useState(false);
@@ -147,7 +147,6 @@ const MyProfile = () => {
         <Elements stripe={stripePromise}>
         <CheckOutForm refetch={refetch} totalPrice={totalPrice} setOpen={setOpen}/>
        </Elements>
-     
       
        </div>
       </Dialog>

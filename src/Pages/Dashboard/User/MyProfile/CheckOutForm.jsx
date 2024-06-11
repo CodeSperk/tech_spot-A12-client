@@ -56,15 +56,14 @@ const CheckOutForm = ({ refetch, setOpen, totalPrice }) => {
     if (confirmError) {
       console.log("confirm error");
     } else {
-      console.log("Payment Intent", paymentIntent);
-      if (paymentIntent.status === "succeeded") {
-        setTransectionId(paymentIntent.id);
+      if (paymentIntent?.status === "succeeded") {
+        setTransectionId(paymentIntent?.id);
 
         // save the payment info in the database
         const paymentInfo = {
-          email: user.email,
+          email: user?.email,
           price: totalPrice,
-          transectionId: paymentIntent.id,
+          transectionId: paymentIntent?.id,
         };
         axiosSecure.patch("/membership", paymentInfo).then((res) => {
           if (res.data.modifiedCount > 0) {

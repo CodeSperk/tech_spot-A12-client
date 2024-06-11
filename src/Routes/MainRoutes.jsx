@@ -16,12 +16,14 @@ import ManageCoupons from "../Pages/Dashboard/Admin/ManageCoupons/ManageCoupons"
 import ReviewProduct from "../Pages/Dashboard/Moderator/ReviewProduct/ReviewProduct";
 import ReportedProducts from "../Pages/Dashboard/Moderator/ReportedProducts/ReportedProducts";
 import UpdateProduct from "../Pages/Dashboard/User/Update/UpdateProduct";
+import ErrorPage from "../Pages/ErrorPage/ErrorPage";
 
 
 const MainRoutes = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement:<ErrorPage />,
     children: [
       {
         path: "/",
