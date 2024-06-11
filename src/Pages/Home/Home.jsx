@@ -3,11 +3,16 @@ import SectionTitle from "../../SharedComponents/SectionTitle/SectionTitle";
 import Featured from "./FeaturedSection/Featured";
 import Trending from "./Trending Section/Trending";
 import CouponSection from "./CouponSection/CouponSection";
+import Banner from "./HomeBanner/Banner";
 
 const Home = () => {
   return (
     <div>
-      
+      {/* banner */}
+      <header>
+        <Banner />
+      </header>
+
       <main>
         {/* Featured Section */}
         <section className="bg-[var(--clr-white)] py-10 md:py-12 lg:py-16 mt-16 md:mt-20 lg:mt-28">
@@ -16,7 +21,7 @@ const Home = () => {
         </section>
 
         {/* Trending Product Sections */}
-        <section className="mt-16 md:mt-20 lg:mt-28 max-w-[1440px] mx-auto px-4 md:px-8 lg:px-10 2xl:px-14">
+        <section id="trending" className="mt-16 md:mt-20 lg:mt-28 max-w-[1440px] mx-auto px-4 md:px-8 lg:px-10 2xl:px-14">
           <SectionTitle title="Trending Products" />
           <Trending />
           <Link to="/products">
