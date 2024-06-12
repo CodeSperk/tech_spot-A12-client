@@ -1,6 +1,4 @@
 ## TechSpot
-
-## Live Site
 [Your Website's Live Link](https://www.example.com)
 
 # Key Features
