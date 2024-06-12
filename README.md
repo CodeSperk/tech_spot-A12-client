@@ -1,5 +1,5 @@
 # TechSpot    
-## [Live Link]([https://www.example.com](https://b9a12-final-project.web.app))
+## [Live Link](https://b9a12-final-project.web.app)
 
 ### Key Features
    - Integrated a secure payment system allowing users to unlock premium features to upload unlimited  products.
