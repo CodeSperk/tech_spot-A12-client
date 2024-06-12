@@ -1,7 +1,7 @@
-## TechSpot
-[Your Website's Live Link](https://www.example.com)
+# TechSpot    
+## [Live Link](https://www.example.com)
 
-# Key Features
+### Key Features
    - Integrated a secure payment system allowing users to unlock premium features to upload unlimited  products.
    - Implemented a robust search feature on the Products page, allowing users to search for products based on tags.
    - Users can view and edit their profile, add new products, and manage their submissions.
