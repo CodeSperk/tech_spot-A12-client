@@ -73,6 +73,7 @@ const ProductDetails = () => {
 
   const handleSubmitReview = (e) => {
     e.preventDefault();
+    const form = e.target;
     const rating = rate;
     const productId = _id;
     const reviewerName = user?.displayName;
@@ -91,6 +92,7 @@ const ProductDetails = () => {
         showConfirmButton: false,
         timer: 1500,
       });
+      form.reset();
       refetch();
     }
    })

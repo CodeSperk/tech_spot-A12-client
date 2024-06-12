@@ -46,8 +46,7 @@ const Home = () => {
               </Link>
             </div>
               <CouponSection />
-            
-          </div>
+            </div>
         </section>
 
        

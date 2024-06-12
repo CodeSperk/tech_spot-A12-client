@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AddProduct = () => {
   const axiosSecure = useAxiosSecure();
   const {user} = useAuth();
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState(["Tech"]);
   const navigate = useNavigate();
 
   // Product tags suggession
