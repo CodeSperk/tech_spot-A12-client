@@ -16,7 +16,7 @@
    - Material Tailwind
 
 ### Steps to run locally
-   - Clone the repository : https://github.com/CodeSperk/Travel-B9A10_Client.git
+   - Clone the repository : git clone https://github.com/CodeSperk/Travel-B9A10_Client.git
    - Navigate to the project directory using command
    - Install dependencies : npm install / npm i
    - Run the project      : npm run dev
